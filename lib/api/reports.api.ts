@@ -1,32 +1,9 @@
 import { api } from './axios';
-import { User } from '@/lib/users/user.interface';
-import {
-  CreateUserRequest,
-  UpdateUserRequest,
-} from '@/lib/users/user.requests';
+import { FinancialReportResponse } from '@/lib/transactions/finantial-report.responses';
 
 export const reportsApi = {
-  getTransactionReport: async (): Promise<User[]> => {
-    const { data } = await api.get('/users');
+  getFinancialReport: async (): Promise<FinancialReportResponse> => {
+    const { data } = await api.get('/financial-report');
     return data;
-  },
-
-  getById: async (id: string): Promise<User> => {
-    const { data } = await api.get(`/users/${id}`);
-    return data;
-  },
-
-  create: async (payload: CreateUserRequest): Promise<User> => {
-    const { data } = await api.post('/users', payload);
-    return data;
-  },
-
-  update: async (id: string, payload: UpdateUserRequest): Promise<User> => {
-    const { data } = await api.put(`/users/${id}`, payload);
-    return data;
-  },
-
-  delete: async (id: string): Promise<void> => {
-    await api.delete(`/users/${id}`);
   },
 };
