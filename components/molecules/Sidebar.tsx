@@ -7,9 +7,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/router'
 import Private from '../organism/Private'
+import { getUserRole } from '@/lib/auth/utils'
 
 const Sidebar = () => {
   const { data: session } = authClient.useSession();
+  const role = getUserRole(session);
 
   const location = useRouter()
 
@@ -80,7 +82,7 @@ const Sidebar = () => {
             <CardHeader className="flex flex-row gap-5 justify-center items-center p-2 pt-0 md:p-4">
               <div>
                 <CardTitle>{session?.user?.name}</CardTitle>
-                <CardTitle>{(session?.user as any)?.role}</CardTitle>
+                <CardTitle>{role}</CardTitle>
               </div>
               <Avatar>
                 <AvatarImage
