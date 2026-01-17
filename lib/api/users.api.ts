@@ -5,7 +5,7 @@ import {
   UpdateUserRequest,
 } from '@/lib/users/user.requests';
 
-export const userApi = {
+export const usersApi = {
   getAll: async (): Promise<User[]> => {
     const { data } = await api.get('/users');
     return data;

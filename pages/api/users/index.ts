@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { fromNodeHeaders } from 'better-auth/node';
-import { CreateUserRequest } from '@/lib/auth/app-user.interface';
+import { CreateUserRequest } from '@/lib/users/user.requests';
+import { Enum_RoleName } from '@prisma/client';
 
 export default async function handler(
   req: NextApiRequest,
@@ -51,7 +52,7 @@ export default async function handler(
           name,
           email,
           emailVerified: false,
-          role: role || 'ADMIN',
+          role: Enum_RoleName.ADMIN,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

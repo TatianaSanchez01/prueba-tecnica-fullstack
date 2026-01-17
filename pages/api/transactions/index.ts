@@ -1,7 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { auth } from '@/lib/auth';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma';
+import { auth } from '@/lib/auth';
 import { fromNodeHeaders } from 'better-auth/node';
+import { CreateTransactionRequest } from '@/lib/transactions/transaction.requests';
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,61 +17,36 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
-    try {
-      const transactions = await prisma.transaction.findMany({
-        include: {
-          user: {
-            select: {
-              name: true,
-            },
-          },
+    const transactions = await prisma.transaction.findMany({
+      include: {
+        user: {
+          select: { id: true, name: true },
         },
-        orderBy: {
-          date: 'desc',
-        },
-      });
+      },
+      orderBy: { date: 'desc' },
+    });
 
-      return res.status(200).json(transactions);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-      return res.status(500).json({ message: 'Internal Server Error' });
-    }
-  } else if (req.method === 'POST') {
-    if (session.user.role !== 'ADMIN') {
-      return res.status(403).json({ message: 'Forbidden: Admins only' });
-    }
-
-    const { amount, description, date } = req.body;
-
-    if (amount === undefined || !description || !date) {
-      return res.status(400).json({
-        message: 'Amount, description, and date are required',
-      });
-    }
-
-    try {
-      const newTransaction = await prisma.transaction.create({
-        data: {
-          amount: parseFloat(amount),
-          description,
-          date: new Date(date),
-          userId: session.user.id,
-        },
-        include: {
-          user: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      });
-
-      return res.status(201).json(newTransaction);
-    } catch (error) {
-      console.error('Error creating transaction:', error);
-      return res.status(500).json({ message: 'Error creating transaction' });
-    }
-  } else {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(200).json(transactions);
   }
+
+  if (req.method === 'POST') {
+    const { amount, description, date }: CreateTransactionRequest = req.body;
+
+    if (!amount || !description || !date) {
+      return res.status(400).json({ message: 'Missing fields' });
+    }
+
+    const transaction = await prisma.transaction.create({
+      data: {
+        userId: session.user.id,
+        amount,
+        description,
+        date: new Date(date),
+      },
+    });
+
+    return res.status(201).json(transaction);
+  }
+
+  return res.status(405).json({ message: 'Method not allowed' });
 }
