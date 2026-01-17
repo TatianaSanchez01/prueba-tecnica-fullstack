@@ -1,5 +1,9 @@
 import { api } from './axios';
-import { User, CreateUserRequest, UpdateUserRequest } from '@/lib/interfaces/user';
+import { User } from '@/lib/users/user.interface';
+import {
+  CreateUserRequest,
+  UpdateUserRequest,
+} from '@/lib/users/user.requests';
 
 export const userApi = {
   getAll: async (): Promise<User[]> => {

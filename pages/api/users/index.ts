@@ -2,9 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { fromNodeHeaders } from 'better-auth/node';
-import { CreateUserRequest } from '@/lib/interfaces/user';
+import { CreateUserRequest } from '@/lib/auth/app-user.interface';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });

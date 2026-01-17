@@ -31,6 +31,7 @@ model User {
   role          Enum_RoleName  @default(ADMIN)
   sessions      Session[]
   accounts      Account[]
+  transactions  Transaction[]
 
   @@unique([email])
   @@map("user")
@@ -79,4 +80,18 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  amount      Float
+  description String
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transaction")
 }
