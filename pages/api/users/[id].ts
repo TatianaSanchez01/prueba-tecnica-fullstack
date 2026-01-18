@@ -44,8 +44,7 @@ export default async function handler(
       }
 
       return res.status(200).json(user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
+    } catch {
       return res.status(500).json({ message: 'Error fetching user' });
     }
   } else if (req.method === 'PUT') {
@@ -67,8 +66,7 @@ export default async function handler(
       });
 
       return res.status(200).json(updatedUser);
-    } catch (error) {
-      console.error('Error updating user:', error);
+    } catch {
       return res.status(500).json({ message: 'Error updating user' });
     }
   } else if (req.method === 'DELETE') {
@@ -82,8 +80,7 @@ export default async function handler(
         where: { id },
       });
       return res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting user:', error);
+    } catch {
       return res.status(500).json({ message: 'Error deleting user' });
     }
   } else {

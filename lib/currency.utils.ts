@@ -3,10 +3,8 @@ export const formatAmount = (amount: number) => {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount); // Aseguramos que sea positivo antes de formatearlo
+  }).format(amount);
 
-  // Si el monto es negativo, agregamos el signo "-"
+  // Agregamos el signo "$" al inicio
   return `$${formattedAmount}`;
 };
-
-// Formatear el monto a pesos colombianos

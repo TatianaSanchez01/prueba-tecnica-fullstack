@@ -73,8 +73,7 @@ const Index = () => {
         email: user.email,
         role: user.role,
       });
-    } catch (error) {
-      console.error('Error fetching user:', error);
+    } catch {
       toast('Error al cargar usuario.', {
         description: 'Ocurrió un error al cargar los datos del usuario.',
       });
@@ -112,8 +111,7 @@ const Index = () => {
       }
 
       router.push('/usuarios');
-    } catch (error) {
-      console.error('Error saving user:', error);
+    } catch {
       toast('Error al guardar usuario.', {
         description: 'Ocurrió un error al guardar el usuario.',
       });

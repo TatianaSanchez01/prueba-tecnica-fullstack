@@ -6,6 +6,3 @@ export interface User {
   image?: string | null;
   createdAt: string;
 }
-
-
-
