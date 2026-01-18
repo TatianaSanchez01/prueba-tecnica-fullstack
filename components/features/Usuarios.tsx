@@ -20,7 +20,8 @@ import { UserRoundPlus } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import ReactLoading from 'react-loading';
 import { toast } from 'sonner';
-import { User } from '@/lib/interfaces/user';
+import { User } from '@/lib/users/user.interface';
+
 
 function Usuarios() {
   const [users, setUsers] = useState<User[]>([]);

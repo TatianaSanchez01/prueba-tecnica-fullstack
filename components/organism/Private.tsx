@@ -1,7 +1,7 @@
 import React from 'react';
 import { authClient } from '@/lib/auth/client';
 import { Enum_RoleName } from '@prisma/client';
-import { getUserRole } from '@/lib/auth/utils';
+import { getUserRole } from '@/lib/auth/auth.helpers';
 
 function Private({
   children,

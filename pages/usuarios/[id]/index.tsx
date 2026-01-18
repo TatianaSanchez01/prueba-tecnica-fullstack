@@ -24,10 +24,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { authClient } from '@/lib/auth/client';
 import { toast } from 'sonner';
-import { userApi } from '@/lib/api/users';
+import { userApi } from '@/lib/api/users.api';
 import Loading from '@/components/atoms/Loading';
 import ForbiddenMessage from '@/components/atoms/ForbiddenMessage';
-import { getUserRole } from '@/lib/auth/utils';
+import { getUserRole } from '@/lib/auth/auth.helpers';
 
 const FormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -110,7 +110,6 @@ const Index = () => {
         toast('Usuario actualizado con éxito.', {
           description: `El usuario ${values.name} ha sido actualizado correctamente.`,
         });
-
       }
 
       router.push('/usuarios');
