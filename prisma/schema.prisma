@@ -10,17 +10,25 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+enum Enum_RoleName {
+  ADMIN
+  USER
 }
 
 model User {
-  id            String    @id
+  id            String         @id
   name          String
   email         String
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  role          Enum_RoleName  @default(USER)
   sessions      Session[]
   accounts      Account[]
 
