@@ -28,7 +28,7 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  role          Enum_RoleName  @default(USER)
+  role          Enum_RoleName  @default(ADMIN)
   sessions      Session[]
   accounts      Account[]
 

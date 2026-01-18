@@ -1,23 +1,23 @@
-import React from 'react'
-import { authClient } from '@/lib/auth/client'
-import { Enum_RoleName } from '@prisma/client'
+import React from 'react';
+import { authClient } from '@/lib/auth/client';
+import { Enum_RoleName } from '@prisma/client';
+import { getUserRole } from '@/lib/auth/utils';
 
 function Private({
   children,
   allowedRoles,
 }: {
-  children: React.ReactNode
-  allowedRoles: Enum_RoleName[]
+  children: React.ReactNode;
+  allowedRoles: Enum_RoleName[];
 }) {
-  const { data: session } = authClient.useSession()
-
-  const role = (session?.user as any)?.role
+  const { data: session } = authClient.useSession();
+  const role = getUserRole(session);
 
   if (allowedRoles.includes(role)) {
-    return <>{children}</>
+    return <>{children}</>;
   } else {
-    return <></>
+    return <></>;
   }
 }
 
-export default Private
+export default Private;
