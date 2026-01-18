@@ -44,13 +44,7 @@ function IngresosGastos() {
       setLoading(true);
       const data = await transactionsApi.getAll();
       setTransactions(data);
-    } catch (error: any) {
-      if (error.response?.status === 403) {
-        router.replace('/');
-        return;
-      }
-
-      console.error('Error fetching transactions:', error);
+    } catch {
       toast('Error al cargar transacciones.', {
         description: 'Ocurrió un error al cargar la lista de transacciones.',
       });
@@ -69,12 +63,7 @@ function IngresosGastos() {
       });
 
       await fetchTransactions();
-    } catch (error: any) {
-      if (error.response?.status === 403) {
-        router.replace('/');
-        return;
-      }
-      console.error('Error deleting transaction:', error);
+    } catch {
       toast('Error al eliminar transacción.', {
         description: 'Ocurrió un error al eliminar la transacción.',
       });
