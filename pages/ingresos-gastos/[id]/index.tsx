@@ -107,7 +107,9 @@ const Index = ({ id }: { id: string }) => {
 
       router.push('/ingresos-gastos');
     } catch {
-      toast('Error al guardar transacción');
+      toast('Error al guardar transacción', {
+        description: 'Ocurrió un error al guardar la transacción.',
+      });
     } finally {
       setLoading(false);
     }

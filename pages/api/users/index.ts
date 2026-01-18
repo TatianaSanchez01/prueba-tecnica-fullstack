@@ -34,8 +34,7 @@ export default async function handler(
         },
       });
       return res.status(200).json(users);
-    } catch (error) {
-      console.error('Error fetching users:', error);
+    } catch {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
   } else if (req.method === 'POST') {
@@ -58,8 +57,7 @@ export default async function handler(
         },
       });
       return res.status(201).json(newUser);
-    } catch (error) {
-      console.error('Error creating user:', error);
+    } catch {
       return res.status(500).json({ message: 'Error creating user' });
     }
   } else {

@@ -56,8 +56,7 @@ export default async function handler(
         totalIncome,
         totalExpenses,
       });
-    } catch (error) {
-      console.error('Error fetching financial report:', error);
+    } catch {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
   } else {

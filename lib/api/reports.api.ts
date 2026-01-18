@@ -1,5 +1,5 @@
 import { api } from './axios';
-import { FinancialReportResponse } from '@/lib/transactions/finantial-report.responses';
+import { FinancialReportResponse } from '@/lib/transactions/financial-report.responses';
 
 export const reportsApi = {
   getFinancialReport: async (): Promise<FinancialReportResponse> => {
