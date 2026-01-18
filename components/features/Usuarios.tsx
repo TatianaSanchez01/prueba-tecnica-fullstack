@@ -18,15 +18,14 @@ import {
 } from '../ui/table';
 import { UserRoundPlus } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import ReactLoading from 'react-loading';
 import { toast } from 'sonner';
 import { User } from '@/lib/users/user.interface';
-
+import Loading from '../atoms/Loading';
+import { usersApi } from '@/lib/api/users.api';
 
 function Usuarios() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mutationLoading, setMutationLoading] = useState(false);
   const router = useRouter();
 
   // Fetch users on component mount
@@ -37,20 +36,14 @@ function Usuarios() {
   async function fetchUsers() {
     try {
       setLoading(true);
-      const response = await fetch('/api/users');
-
-      if (response.status === 403) {
-        router.replace('/'); // o /login o donde quieras
+      const data = await usersApi.getAll();
+      setUsers(data);
+    } catch (error: any) {
+      if (error.response?.status === 403) {
+        router.replace('/');
         return;
       }
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
       console.error('Error fetching users:', error);
       toast('Error al cargar usuarios.', {
         description: 'Ocurrió un error al cargar la lista de usuarios.',
@@ -64,47 +57,31 @@ function Usuarios() {
     const userToDelete = users.find((u) => u.id === id);
 
     try {
-      setMutationLoading(true);
-      const response = await fetch(`/api/users/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.status === 403) {
-        router.replace('/');
-        return;
-      }
-      console.log(response);
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
-      }
+      setLoading(true);
+      await usersApi.delete(id);
 
       toast('El usuario fue eliminado con éxito.', {
         description: `El usuario ${userToDelete?.name || ''} fue eliminado con éxito.`,
       });
 
-      // Refresh the user list
       await fetchUsers();
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.status === 403) {
+        router.replace('/');
+        return;
+      }
+
       console.error('Error deleting user:', error);
       toast('Error al eliminar el usuario.', {
         description: 'Ocurrió un error al eliminar el usuario.',
       });
     } finally {
-      setMutationLoading(false);
+      setLoading(false);
     }
   }
 
-  if (loading || mutationLoading) {
-    return (
-      <div className='flex items-center justify-center'>
-        <ReactLoading
-          type='bubbles'
-          color='#3B82F6'
-          height={'20%'}
-          width={'20%'}
-        />
-      </div>
-    );
+  if (loading) {
+    return <Loading />;
   }
 
   return (
@@ -134,7 +111,7 @@ function Usuarios() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user) => (
+            {users.map((user: User) => (
               <TableRow className='bg-accent' key={user.id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell className='hidden sm:table-cell'>

@@ -24,10 +24,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { authClient } from '@/lib/auth/client';
 import { toast } from 'sonner';
-import { userApi } from '@/lib/api/users.api';
+import { usersApi } from '@/lib/api/users.api';
 import Loading from '@/components/atoms/Loading';
 import ForbiddenMessage from '@/components/atoms/ForbiddenMessage';
 import { getUserRole } from '@/lib/auth/auth.helpers';
+import { Role } from '@/lib/auth/role.enum';
 
 const FormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -45,7 +46,6 @@ const Index = () => {
   const role = getUserRole(session);
 
   const [loading, setLoading] = useState(false);
-  const [mutationLoading, setMutationLoading] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -53,7 +53,7 @@ const Index = () => {
       name: '',
       email: '',
       phone: '',
-      role: 'ADMIN',
+      role: Role.ADMIN,
     },
   });
 
@@ -67,7 +67,7 @@ const Index = () => {
   async function fetchUser() {
     try {
       setLoading(true);
-      const user = await userApi.getById(id);
+      const user = await usersApi.getById(id);
       form.reset({
         name: user.name,
         email: user.email,
@@ -85,26 +85,25 @@ const Index = () => {
   }
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
-    setMutationLoading(true);
+    setLoading(true);
 
     try {
       if (isNewUser) {
         // Create new user
-        await userApi.create({
+        await usersApi.create({
           name: values.name,
           email: values.email!,
-          role: values.role,
+          role: values.role as Role,
         });
 
         toast('Usuario creado con éxito.', {
           description: `El usuario ${values.name} ha sido creado correctamente.`,
         });
       } else {
-        console.log(values);
         // Update existing user
-        await userApi.update(id, {
+        await usersApi.update(id, {
           name: values.name,
-          role: values.role,
+          role: values.role as Role,
         });
 
         toast('Usuario actualizado con éxito.', {
@@ -119,7 +118,7 @@ const Index = () => {
         description: 'Ocurrió un error al guardar el usuario.',
       });
     } finally {
-      setMutationLoading(false);
+      setLoading(false);
     }
   }
 
@@ -127,7 +126,7 @@ const Index = () => {
     router.push('/usuarios');
   };
 
-  if (status || loading || mutationLoading) return <Loading />;
+  if (status || loading) return <Loading />;
 
   if (role !== 'ADMIN') {
     return <ForbiddenMessage />;
@@ -211,15 +210,15 @@ const Index = () => {
                 <Button
                   type='submit'
                   className='px-6 py-2 font-medium rounded-md shadow'
-                  disabled={mutationLoading}
+                  disabled={loading}
                 >
-                  {mutationLoading ? 'Guardando...' : 'Guardar'}
+                  {loading ? 'Guardando...' : 'Guardar'}
                 </Button>
                 <Button
                   variant='outline'
                   type='button'
                   onClick={handleRedirect}
-                  disabled={mutationLoading}
+                  disabled={loading}
                 >
                   Cancelar
                 </Button>
