@@ -1,117 +1,139 @@
-## Prueba Técnica para Desarrollador Fullstack
+# Prueba Técnica Fullstack - Gestión de Ingresos y Gastos
 
-### Introducción
+Este proyecto es una aplicación web fullstack diseñada para la gestión de movimientos financieros (ingresos y egresos), la administración de usuarios y la visualización de reportes detallados.
 
-El objetivo de esta prueba técnica es evaluar tus habilidades en el desarrollo de una aplicación fullstack. Deberás implementar un sistema de gestión de ingresos y egresos, la gestión de usuarios y la generación de reportes. El proyecto cuenta con [wireframes](<https://www.figma.com/design/2PINjveveJJ9ZAAwxwNoRK/Wireframes-(Copy)?node-id=0-1&t=6q0Q0id8YnjH9fJt-1>) que pueden servir de guía para el candidato. Sin embargo, el diseño de la interfaz de usuario es libre.
+## 🚀 Funcionalidades
 
-### Requisitos del Proyecto
+### 1. Autenticación y Seguridad
 
-#### Funcionalidades Principales
+- **Autenticación con GitHub**: Implementada mediante [Better Auth](https://www.better-auth.com/).
+- **Control de Acceso basado en Roles (RBAC)**:
+  - **ADMIN**: Acceso total (Movimientos, Usuarios, Reportes).
+  - **USER**: Acceso limitado exclusivamente a la gestión de movimientos.
+- **Asignación Automática**: Por requisitos de la prueba, todos los nuevos usuarios registrados reciben automáticamente el rol `ADMIN`.
 
-1. **Roles y Permisos**
-   - **Roles:**
-     - **Usuario:** Solo puede acceder a la gestión de movimientos.
-     - **Administrador:** Puede ver los reportes, editar usuarios y agregar movimientos.
-   - **Nota:** Para efectos de prueba, todos los nuevos usuarios deben ser automáticamente asignados con el rol "ADMIN".
+### 2. Gestión de Ingresos y Gastos
 
-2. **Home**
-   - Página de inicio con un menú principal que permite la navegación a tres secciones:
-     - Sistema de gestión de ingresos y gastos (disponible para todos los roles)
-     - Gestión de usuarios (solo para administradores)
-     - Reportes (solo para administradores)
+- Visualización de movimientos en una tabla interactiva (Concepto, Monto, Fecha, Usuario).
+- Creación de nuevos movimientos (Solo administradores).
+- Formulario validado con **React Hook Form** y **Zod**.
 
-3. **Sistema de Gestión de Ingresos y Gastos**
-   - **Vista de Ingresos y Egresos**
-     - Implementar una tabla que muestre los ingresos y egresos registrados con las siguientes columnas:
-       - Concepto
-       - Monto
-       - Fecha
-       - Usuario
-     - Botón "Nuevo" para agregar un nuevo ingreso o egreso (solo para administradores).
-   - **Formulario de Nuevo Ingreso/Egreso**
-     - Formulario con los campos:
-       - Monto
-       - Concepto
-       - Fecha
-     - Botón para guardar el nuevo movimiento.
+### 3. Gestión de Usuarios (Admin Only)
 
-4. **Gestión de Usuarios** (solo para administradores)
-   - **Vista de Usuarios**
-     - Tabla que muestre la lista de usuarios con las siguientes columnas:
-       - Nombre
-       - Correo
-       - Teléfono
-       - Acciones (editar usuario)
-   - **Formulario de Edición de Usuario**
-     - Formulario con los campos:
-       - Nombre
-       - Rol
-     - Botón para guardar los cambios.
+- Listado de usuarios registrados.
+- Edición de perfiles (Nombre y Rol).
 
-5. **Reportes** (solo para administradores)
-   - Mostrar un gráfico de movimientos financieros.
-   - Mostrar el saldo actual.
-   - Botón para descargar el reporte en formato CSV.
+### 4. Reportes y Estadísticas
 
-### Requisitos Técnicos
+- Gráficos dinámicos de movimientos financieros utilizando **Recharts**.
+- Visualización del saldo actual.
+- **Exportación a CSV**: Descarga de reportes detallados para análisis externo.
 
-- **Tecnologías y Herramientas:**
-  - **Frontend:**
-    - Next.js utilizando `pages` router.
-    - TypeScript.
-    - Tailwind CSS.
-    - Shadcn para componentes de la interfaz de usuario.
-    - NextJS API routes para comunicación con el backend.
-  - **Backend:**
-    - NextJS API routes para implementar endpoints REST.
-    - Base de datos de Postgres en Supabase.
-     - **Documentación de API:** Implementar una ruta `/api/docs` que exponga la documentación del API usando OpenAPI/Swagger. Cada endpoint creado debe estar completamente documentado con sus parámetros, respuestas y ejemplos.
-   - **Protección de Datos:**
-     - Implementar control de acceso basado en roles (RBAC) para asegurar que solo los usuarios autorizados puedan acceder a ciertas funcionalidades y datos.
-     - Proteger el backend para que rechace conexiones no autenticadas.
-   - **Autenticación:**
-     - Utilizar [Better Auth](https://www.better-auth.com/) con [GitHub](https://github.com/settings/developers) como proveedor de autenticación y [Prisma](https://prisma.io) como adaptador para la autenticación por sesiones de base de datos.
-     - **IMPORTANTE:** Todos los nuevos usuarios que se registren deben ser automáticamente asignados con el rol "ADMIN" para facilitar las pruebas de la aplicación.
-   - **Pruebas unitarias**  - El candidato debe agregar al menos 3 pruebas unitarias donde considere necesario.
-  - **Despliegue:**
-    - Desplegar el proyecto en Vercel.
+### 5. Documentación de API
 
-### Entregables
+- Swagger UI integrado en `/api/docs` para explorar y probar los endpoints del backend.
 
-1. **Código Fuente:**
-   - Repositorio en GitHub con el código fuente del proyecto.
-   - Incluir un archivo README con instrucciones claras sobre cómo ejecutar el proyecto localmente y cómo desplegarlo en Vercel.
+---
 
-2. **Despliegue:**
-   - Proyecto desplegado en Vercel con la URL proporcionada.
+## 🛠️ Tecnologías Utilizadas
 
-### Criterios de Evaluación
+- **Frontend**: [Next.js](https://nextjs.org/) (Page Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/).
+- **Componentes UI**: [Shadcn UI](https://ui.shadcn.com/) (Radix UI), [Lucide React](https://lucide.dev/).
+- **Autenticación**: [Better Auth](https://www.better-auth.com/) con adaptador de Prisma.
+- **Base de Datos**: [PostgreSQL](https://www.postgresql.org/) (Alojado en **Supabase**).
+- **ORM**: [Prisma](https://www.prisma.io/).
+- **Gráficos**: [Recharts](https://recharts.org/).
+- **Validación**: [Zod](https://zod.dev/).
 
-- **Funcionalidad:**
-  - Cumplimiento de todos los requisitos funcionales.
-  - Correcta implementación del CRUD para ingresos, egresos y usuarios.
-  - Generación y descarga de reportes en formato CSV.
+---
 
-- **Calidad del Código:**
-  - Calidad y claridad del código.
-  - Uso adecuado de las mejores prácticas de desarrollo.
-  - Estructura del proyecto.
-  - Documentación completa de la API con OpenAPI/Swagger.
+## 💻 Configuración Local
 
-- **Diseño y UX:**
-  - Usabilidad de la interfaz.
-  - Implementación de un diseño atractivo.
+### Requisitos Previos
 
-- **Pruebas y Documentación:**
-  - Cobertura de pruebas unitarias.
-  - Calidad de los comentarios dentro del proyecto.
+- Node.js (v18 o superior)
+- Una base de Datos PostgreSQL (o cuenta en Supabase)
+- Una cuenta de GitHub para configurar OAuth
 
-- **Seguridad:**
-  - Implementación efectiva de control de acceso basado en roles (RBAC).
-  - Protección adecuada de los datos sensibles.
+### Pasos para la instalación
 
-- **Notas**:
-  - El aplicativo no debe contener diseño responsivo.
-  - El candidato puede utilizar el código cargado en este repositorio. Sin embargo, esta no es una condición necesaria y el candidato puede iniciar el proyecto de 0 si lo desea.
-  - El candidato puede cambiar las versiones de las librerías si lo considera necesario.
-  - El candidato debe compartir el acceso al repositorio de GitHub y el .env a los correos mlopera@prevalentware.com, jdsanchez@prevalentware.com y dfsorza@prevalentware.com
+1. **Clonar el repositorio**:
+
+   ```bash
+   git clone <url-del-repositorio>
+   cd prueba-tecnica-fullstack
+   ```
+
+2. **Instalar dependencias**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**:
+   Crea un archivo `.env` en la raíz del proyecto basándote en la siguiente estructura:
+
+   ```env
+   # Base de datos (Supabase recomendado)
+   DATABASE_URL="postgresql://user:password@host:port/dbname?pgbouncer=true"
+   DIRECT_URL="postgresql://user:password@host:port/dbname"
+
+   # GitHub OAuth
+   GITHUB_CLIENT_ID="tu_client_id"
+   GITHUB_CLIENT_SECRET="tu_client_secret"
+
+   # Better Auth
+   BETTER_AUTH_SECRET="un_secreto_aleatorio_de_32_caracteres"
+   NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
+   ```
+
+4. **Configurar la Base de Datos**:
+   Genera el cliente de Prisma y sincroniza el esquema:
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Ejecutar el proyecto**:
+   ```bash
+   npm run dev
+   ```
+   La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🔑 Configuración de Autenticación con GitHub
+
+Para que la autenticación funcione, debes crear una **OAuth App** en GitHub:
+
+1. Ve a **Settings > Developer settings > OAuth Apps > New OAuth App**.
+2. **Homepage URL**: `http://localhost:3000` (o tu URL de Vercel).
+3. **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github` (Añade también la URL de Vercel si estás desplegando).
+4. Copia el `Client ID` y el `Client Secret` en tu archivo `.env`.
+
+---
+
+## 🚀 Despliegue en Vercel
+
+1. Sube tu código a un repositorio de GitHub.
+2. Crea un nuevo proyecto en [Vercel](https://vercel.com/) e impórtalo.
+3. Configura las **Environment Variables** en Vercel con los mismos valores de tu `.env`.
+   - Asegúrate de actualizar `NEXT_PUBLIC_BETTER_AUTH_URL` con la URL de producción proporcionada por Vercel.
+4. En la configuración del proyecto en Vercel, asegúrate de que el comando de instalación incluya la generación de Prisma:
+   - **Install Command**: `npm install && npx prisma generate`
+5. Vercel detectará automáticamente que es un proyecto de Next.js. ¡Despliega!
+
+---
+
+## 📁 Estructura del Proyecto
+
+- `/pages`: Rutas y API endpoints.
+- `/components`: Componentes reutilizables (Atoms, Molecules, Organisms).
+- `/lib`: Configuraciones de Auth, Prisma y utilidades.
+- `/prisma`: Esquema de la base de datos.
+- `/__tests__`: Pruebas unitarias.
+
+---
+
+Desarrollado como parte de una prueba técnica para **Prevalentware**.
